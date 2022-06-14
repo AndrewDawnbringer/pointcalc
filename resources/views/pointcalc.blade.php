@@ -32,7 +32,8 @@
 
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    <p>Hello {{ $result }}!<p>    
+                                    <p>Első eset:<p>   
+                                    <p>Alappontszám: {{ $basePoints }}<p>    
                                 </div>
                             </div>
                         </div>

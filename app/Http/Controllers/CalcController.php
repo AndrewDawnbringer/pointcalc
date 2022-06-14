@@ -234,16 +234,29 @@ class CalcController extends BaseController {
 
             dump($optional, $optionalValues);
             
-            foreach ($optionalValues as $searchValue) {
-                dump(array_key_exists($searchValue, $optional));
+            foreach (array_keys($optionalValues) as $searchValue) {
+                
+                if (array_key_exists($searchValue,$optional)) {
+                    //dump($optionalValues[$searchValue]);
+                    $acceptedOptional[$searchValue] = $optionalValues[$searchValue];
+                }
+
             }
 
-            $bestOptionalValue = max($optionalValues);
-            $bestOptionalName = array_keys($optionalValues, max($optionalValues));
+            dump($acceptedOptional);
+
+            $bestOptionalValue = max($acceptedOptional);
+            $bestOptionalName = array_keys($optionalValues, max($acceptedOptional))[0];
+
+            dump($bestOptionalValue,$bestOptionalName);
 
             //Alappontszám kiszámítása
 
-            
+            $basePoints = ($requiredValue + $bestOptionalValue) * 2;
+
+            dump($basePoints);
+
+            return $basePoints;
 
         } else if ($university == 'PPKE' && $faculty == "BTK" && $degree == "Anglisztika") {
             $required = ['angol'];
@@ -258,8 +271,12 @@ class CalcController extends BaseController {
 
     public function __invoke () {
        //$result = $this->basePoints($this->exampleData3);
-       //return view('pointcalc', ['result' => $result]);
-       $this->basePoints($this->exampleData3);
+       
+       $basePoints = $this->basePoints($this->exampleData1);
+
+       return view('pointcalc', [
+        'basePoints' => $basePoints
+        ]);
     }   
 }
 
