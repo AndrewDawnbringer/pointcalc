@@ -232,7 +232,7 @@ class CalcController extends BaseController {
 
             //Csak az adott szakhoz tartozók kiszűrése
 
-            dump($optional, $optionalValues);
+            //dump($optional, $optionalValues);
             
             foreach (array_keys($optionalValues) as $searchValue) {
                 
@@ -243,18 +243,18 @@ class CalcController extends BaseController {
 
             }
 
-            dump($acceptedOptional);
+            //dump($acceptedOptional);
 
             $bestOptionalValue = max($acceptedOptional);
             $bestOptionalName = array_keys($optionalValues, max($acceptedOptional))[0];
 
-            dump($bestOptionalValue,$bestOptionalName);
+            //dump($bestOptionalValue,$bestOptionalName);
 
             //Alappontszám kiszámítása
 
             $basePoints = ($requiredValue + $bestOptionalValue) * 2;
 
-            dump($basePoints);
+            //dump($basePoints);
 
             return $basePoints;
 
@@ -269,13 +269,85 @@ class CalcController extends BaseController {
 
     }
 
+    public function extraPoints ($data) {
+
+        if (empty($data) || !isset($data)) {
+            return false;
+        }
+
+        //Emelt szintű érettségik
+        $numberOfHighLevels = 0;
+
+        foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
+
+            if ($val['tipus'] == 'emelt') {
+                $numberOfHighLevels++;
+            } 
+        }
+
+        $extraPointsForHighLevels = 50 * $numberOfHighLevels;
+        //dump($extraPointsForHighLevels);
+
+        //Nyelvvizsgák
+        //B2 28 pont
+        //C1 40 pont
+
+        $numberOfB2 = 0;
+        $numberOfC1 = 0;
+
+        foreach ($data['tobbletpontok'] as $key => $val) {
+
+            if ($val['tipus'] == 'B2') {
+                $numberOfB2++;
+            } 
+
+            if ($val['tipus'] == 'C1') {
+                $numberOfC1++;
+            } 
+        }
+
+        //dump($numberOfB2);
+        //dump($numberOfC1);
+
+        $extraPointsForB2 = 28 * $numberOfB2;
+        $extraPointsForC1 = 40 * $numberOfC1;
+
+        //dump($extraPointsForB2, $extraPointsForC1);
+
+        $extraPointsTotal = $extraPointsForHighLevels + $extraPointsForB2 + $extraPointsForC1;
+
+        if ($extraPointsTotal > 100) {
+            return 100;
+        } else {
+            return $extraPointsTotal;
+        }
+
+    }
+
+    public function totalPoints ($base,$extra) {
+
+        if (empty($base) || !isset($base)) {
+            return false;
+        }
+
+        if (empty($extra) || !isset($extra)) {
+            return false;
+        }
+
+        return $base+$extra;
+    }
+
     public function __invoke () {
        //$result = $this->basePoints($this->exampleData3);
        
        $basePoints = $this->basePoints($this->exampleData1);
+       $extraPoints = $this->extraPoints($this->exampleData1);
+       $totalPoints = $this->totalPoints($basePoints, $extraPoints);
 
        return view('pointcalc', [
-        'basePoints' => $basePoints
+        'basePoints' => $basePoints,
+        'extraPoints' => $extraPoints,
+        'totalPoints' => $totalPoints
         ]);
     }   
 }
