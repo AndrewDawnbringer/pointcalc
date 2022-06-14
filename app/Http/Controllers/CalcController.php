@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 class CalcController extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    function __construct () {
+    public function __construct () {
         // output: 470 (370 alappont + 100 többletpont)
         $this->exampleData = [
             'valasztott-szak' => [
@@ -199,9 +199,67 @@ class CalcController extends BaseController {
         ];
     }
 
-    function __invoke () {
-        $name = 'Test';
-        return view('pointcalc', compact('name'));
+    public function basePoints ($data) {
+
+        if (empty($data) || !isset($data)) {
+            return false;
+        }
+
+        $university = $data['valasztott-szak']['egyetem'];
+        $faculty = $data['valasztott-szak']['kar'];
+        $degree = $data['valasztott-szak']['szak'];
+
+        if ($university == 'ELTE' && $faculty == "IK" && $degree == "Programtervező informatikus") {
+            $required = 'matematika';
+            $optional = ['biológia' => true,'fizika' => true,'informatika' => true,'kémia' => true];
+
+            foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
+
+                if ($val['nev'] == $required && intval($val['eredmeny'] >= 20)) {
+                    $requiredValue = intval($val['eredmeny']);
+                    break;  
+                } else {
+                    continue;
+                }
+            }
+
+            //A legjobban sikerült kötelező tárgy meghatározása
+
+            //Minden eredmény ideiglenes tömbbe helyezése
+            foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
+                $optionalValues[$val['nev']] = intval($val['eredmeny']);
+            }
+
+            //Csak az adott szakhoz tartozók kiszűrése
+
+            dump($optional, $optionalValues);
+            
+            foreach ($optionalValues as $searchValue) {
+                dump(array_key_exists($searchValue, $optional));
+            }
+
+            $bestOptionalValue = max($optionalValues);
+            $bestOptionalName = array_keys($optionalValues, max($optionalValues));
+
+            //Alappontszám kiszámítása
+
+            
+
+        } else if ($university == 'PPKE' && $faculty == "BTK" && $degree == "Anglisztika") {
+            $required = ['angol'];
+            $requiredLevel = ['emelt'];
+            $optional = ['francia','német','olasz','orosz','spanyol','történelem'];
+
+        } else {
+            return false;
+        }
+
+    }
+
+    public function __invoke () {
+       //$result = $this->basePoints($this->exampleData3);
+       //return view('pointcalc', ['result' => $result]);
+       $this->basePoints($this->exampleData3);
     }   
 }
 
