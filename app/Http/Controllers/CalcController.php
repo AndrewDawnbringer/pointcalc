@@ -11,8 +11,11 @@ class CalcController extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function __construct () {
+
+        $this->app = app();
+
         // output: 470 (370 alappont + 100 többletpont)
-        $this->exampleData = [
+        $this->exampleData0 = [
             'valasztott-szak' => [
                 'egyetem' => 'ELTE',
                 'kar' => 'IK',
@@ -292,22 +295,52 @@ class CalcController extends BaseController {
         //B2 28 pont
         //C1 40 pont
 
-        $numberOfB2 = 0;
-        $numberOfC1 = 0;
+        //Objektum létrehozása
+        //$languageDegrees = $this->app->make('stdClass');
 
         foreach ($data['tobbletpontok'] as $key => $val) {
 
-            if ($val['tipus'] == 'B2') {
-                $numberOfB2++;
-            } 
-
-            if ($val['tipus'] == 'C1') {
-                $numberOfC1++;
-            } 
+            switch ($val['tipus']) {
+                case 'B2':
+                    switch ($val['nyelv']) {
+                        case 'angol':
+                            $languageDegrees['english'] = 'B2';
+                            break;
+                        case 'német':
+                            $languageDegrees['german'] = 'B2';
+                            break;
+                    }
+                    break;
+                case 'C1':
+                    switch ($val['nyelv']) {
+                        case 'angol':
+                            $languageDegrees['english'] = 'C1';
+                            break;
+                        case 'német':
+                            $languageDegrees['german'] = 'C1';
+                            break;
+                    }
+                    break;
+            }     
         }
 
-        //dump($numberOfB2);
-        //dump($numberOfC1);
+        
+        $numberOfB2 = 0;
+        $numberOfC1 = 0;
+        
+        if ($languageDegrees['english'] == 'C1') {
+            $numberOfC1++;
+        } elseif ($languageDegrees['english'] == 'B2') {
+            $numberOfB2++;
+        }
+
+        if ($languageDegrees['german'] == 'C1') {
+            $numberOfC1++;
+        } elseif ($languageDegrees['german'] == 'B2') {
+            $numberOfB2++;
+        }
+
+        //dump($numberOfB2,$numberOfC1);
 
         $extraPointsForB2 = 28 * $numberOfB2;
         $extraPointsForC1 = 40 * $numberOfC1;
@@ -338,16 +371,40 @@ class CalcController extends BaseController {
     }
 
     public function __invoke () {
-       //$result = $this->basePoints($this->exampleData3);
-       
-       $basePoints = $this->basePoints($this->exampleData1);
-       $extraPoints = $this->extraPoints($this->exampleData1);
-       $totalPoints = $this->totalPoints($basePoints, $extraPoints);
+    
+    //0
+        $basePoints0 = $this->basePoints($this->exampleData0);
+        $extraPoints0 = $this->extraPoints($this->exampleData0);
+        $totalPoints0 = $this->totalPoints($basePoints0, $extraPoints0);
+    //1
+        $basePoints1 = $this->basePoints($this->exampleData1);
+        $extraPoints1 = $this->extraPoints($this->exampleData1);
+        $totalPoints1 = $this->totalPoints($basePoints1, $extraPoints1);
+    //2
+        $basePoints2 = $this->basePoints($this->exampleData2);
+        $extraPoints2 = $this->extraPoints($this->exampleData2);
+        $totalPoints2 = $this->totalPoints($basePoints2, $extraPoints2);
+    //3
+        $basePoints3 = $this->basePoints($this->exampleData3);
+        $extraPoints3 = $this->extraPoints($this->exampleData3);
+        $totalPoints3 = $this->totalPoints($basePoints3, $extraPoints3);
 
        return view('pointcalc', [
-        'basePoints' => $basePoints,
-        'extraPoints' => $extraPoints,
-        'totalPoints' => $totalPoints
+        'basePoints0' => $basePoints0,
+        'extraPoints0' => $extraPoints0,
+        'totalPoints0' => $totalPoints0,
+
+        'basePoints1' => $basePoints1,
+        'extraPoints1' => $extraPoints1,
+        'totalPoints1' => $totalPoints1,
+
+        'basePoints2' => $basePoints2,
+        'extraPoints2' => $extraPoints2,
+        'totalPoints2' => $totalPoints2,
+
+        'basePoints3' => $basePoints3,
+        'extraPoints3' => $extraPoints3,
+        'totalPoints3' => $totalPoints3,
         ]);
     }   
 }

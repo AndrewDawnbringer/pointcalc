@@ -33,9 +33,24 @@
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <p>Első eset:<p>   
-                                    <p>Alappontszám: {{ $basePoints }}<p>    
-                                    <p>Többletpontszám: {{ $extraPoints }}<p>  
-                                    <p>Összpontszám: {{ $totalPoints }}<p>  
+                                    <p>Alappontszám: {{ $basePoints0 }}<p>    
+                                    <p>Többletpontszám: {{ $extraPoints0 }}<p>  
+                                    <p>Összpontszám: {{ $totalPoints0 }}<p>  
+                                    <hr>
+                                    <p>Második eset:<p>   
+                                    <p>Alappontszám: {{ $basePoints1 }}<p>    
+                                    <p>Többletpontszám: {{ $extraPoints1 }}<p>  
+                                    <p>Összpontszám: {{ $totalPoints1 }}<p>  
+                                    <hr>
+                                    <p>Harmadik eset:<p>   
+                                    <p>Alappontszám: {{ $basePoints2 }}<p>    
+                                    <p>Többletpontszám: {{ $extraPoints2 }}<p>  
+                                    <p>Összpontszám: {{ $totalPoints2 }}<p>  
+                                    <hr>
+                                    <p>Negyedik eset:<p>   
+                                    <p>Alappontszám: {{ $basePoints3 }}<p>    
+                                    <p>Többletpontszám: {{ $extraPoints3 }}<p>  
+                                    <p>Összpontszám: {{ $totalPoints3 }}<p>  
                                 </div>
                             </div>
                         </div>
