@@ -20,4 +20,4 @@ Route::get('/', function () {
 });
 */
 
-Route::get('/', CalcController::class)->name('index');
+Route::get('/', CalcController::class);

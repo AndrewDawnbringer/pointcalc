@@ -199,7 +199,10 @@ class CalcController extends BaseController {
         ];
     }
 
-    
+    function __invoke () {
+        $name = 'Test';
+        return view('pointcalc', compact('name'));
+    }   
 }
 
 
