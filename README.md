@@ -1,64 +1,50 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
-
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+EGYSZERŰSÍTETT PONTSZÁMÍTÓ KALKULÁTOR
+Feladat leírása
+- Input: Jelentkező érettségi adatait tartalmazó tömb
+- Output: Jelentkező pontszáma, amennyiben lehetséges -
+Alapképzés (BSC) esetén tegyük fel, hogy a felvételi összpontszámot 400+100 (alappont+többletpont) pontos pontszámítási rendszerben kell kiszámítani.
+Az alappontok számítása az érettségi eredmények függvényében történik.
+Az érettségi során a felvételizők bizonyos tárgyakból érettségi vizsgát tesznek. Egy adott tárgyból 0-100% között lehet a felvételiző tantárgyi érettségi eredménye. Amennyiben valamely tárgyból 20% alatt teljesített a felvételiző, úgy sikertelen az érettségi eredménye és a pontszámítás nem lehetséges.
+A jelentkezőknek a következő tárgyakból kötelező érettségi vizsgát tennie: magyar nyelv és irodalom, történelem és matematika egyéb esetben a pontszámítás nem lehetséges.
+Az érettségi tantárgynak létezik típusa, amely vagy közép, vagy emelt szintű lehet.
+Alappontok számítása:
+Minden szaknak megvan a maga tárgyi követelményrendszere, amely meghatározza, hogy mely tárgyakat kell figyelembe venni az alappontok kiszámításához.
+- Kötelező tárgy: amelyből mindenképpen érettségit kell tennie a jelentkezőnek
+- Kötelezően választható tárgyak: olyan tárgyak összesége, amelyből a jelentkező döntheti el, hogy mely tárgyból vagy tárgyakból szeretne érettségi vizsgát tenni. Egy tárgyat mindenképpen választani kell.
+Amennyiben a kötelező tárgyból, vagy egyetlen kötelezően választható tárgyból sem tett érettségit a hallgató, úgy a pontszámítás nem lehetséges.
+A kiszámítás során egy tárgy pontértéke (függetlenül a szintjétől) megegyezik a százalékos eredmény értékével.
+Az alappontszám megállapításához csak a kötelező tárgy pontértékét és a legjobban sikerült kötelezően választható tárgy pontértékét kell összeadni és az így kapott összeget megduplázni.
+2
+Többletpontok számítása:
+Nyelvtudás
+- Nyelvvizsga: B2/középfokú komplex: 28 pont
+- Nyelvvizsga: C1/felsőfokú komplex: 40 pont
+Emelt szintű érettségi
+- Vizsgatárgyanként: 50 pont
+A többletpontok összege 0 és legfeljebb 100 pont között lehetséges abban az esetben is, ha a jelentkező különböző jogcímek alapján elért többletpontjainak az összege ezt meghaladná.
+Amennyiben a jelentkező egyazon nyelvből tett le több sikeres nyelvvizsgát, úgy a többletpontszámítás során egyszer kerülnek kiértékelésre a nagyobb pontszám függvényében (pl.: angol B2 és angol C1 összértéke 40 pont lesz).
+Összpontszám:
+Az összpontszámot az alappontok és többletpontok összege adja meg.
+A könnyebbség kedvéért a feladathoz csak az itt megadott két szak érettségi követelményrendszerét kell figyelembe venni.
+Az ELTE IK - Programtervező informatikus:
+- Kötelező: matematika
+- Kötelezően választható: biológia vagy fizika vagy informatika vagy kémia
+A PPKE BTK – Anglisztika:
+- Kötelező: angol (emelt szinten)
+- Kötelezően választható: francia vagy német vagy olasz vagy orosz vagy spanyol vagy történelem
+A bemenet és a hozzájuk tartozó kimenet elérhető mellékletben a homework_input.php fájlban.
+Jó munkát kívánunk!
+3
+Elvárások:
+- A megadott feladat visszaküldésére 72 óra áll a rendelkezésére
+- PHP nyelven valósítsa meg a kitűzött feladatot
+- Nincs szükség CLI vagy felhasználói felület megvalósítására
+- OOP alapelvek használata
+- Ha nem készült el a teljes megoldással, akkor is küldje el a megoldását
+- A megoldását valamilyen verziókövető rendszeren keresztül adja be (GitLab, GitHub, …)
+- Composer használata
+További elvárások senior pozíció esetében:
+- Automatizált teszteszközök használata
+- Test-driven Development (TDD) által való fejlesztés
+- Programtervezési minták használata
+- Clean Code (Robert C. Martin) elveinek alkalmazása
