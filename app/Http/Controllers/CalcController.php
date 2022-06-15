@@ -213,9 +213,11 @@ class CalcController extends BaseController {
         $degree = $data['valasztott-szak']['szak'];
 
         if ($university == 'ELTE' && $faculty == "IK" && $degree == "Programtervező informatikus") {
-            $required = 'matematika';
+            $required = ['matematika' => true, 'magyar nyelv és irodalom' => true, 'történelem' => true];
             $optional = ['biológia' => true,'fizika' => true,'informatika' => true,'kémia' => true];
+            $degreeRequired = 'matematika';
 
+            /*
             foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
 
                 if ($val['nev'] == $required && intval($val['eredmeny'] >= 20)) {
@@ -225,6 +227,73 @@ class CalcController extends BaseController {
                     continue;
                 }
             }
+            */
+
+            //Kötelező tárgyak meglétének ellenőrzése és azok > 20%
+            foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
+                $requiredValues[$val['nev']] = intval($val['eredmeny']);
+            }
+
+            foreach (array_keys($requiredValues) as $searchValue) {
+                
+                if (array_key_exists($searchValue, $required)) {
+                    $acceptedOptional[$searchValue] = $requiredValues[$searchValue];
+                }
+
+            }
+
+            $intersect = array_intersect_key($required, $requiredValues);
+            //dump($intersect);
+
+            if (!isset($intersect['matematika'])) {
+                //dump('Hiányzó tárgy: Matematika');
+                return false;
+            } else if (intval($requiredValues['matematika']) < 20) {
+                //dump('Nem elégséges eredmény - Matematika: <20%');
+                return false;
+            } else {
+                //dump('Matematika OK');
+            }
+
+            
+
+            if (!isset($intersect['történelem'])) {
+                //dump('Hiányzó tárgy: Történelem');
+                return false;
+            } else if (intval($requiredValues['történelem']) < 20) {
+                //dump('Nem elégséges eredmény - Történelem: <20%');
+                return false;
+            } else {
+                //dump('történelem OK');
+            }
+            
+            
+
+            if (!isset($intersect['magyar nyelv és irodalom'])) {
+                //dump('Hiányzó tárgy: Magyar nyelv és irodalom');
+                return false;
+            } else if (intval($requiredValues['magyar nyelv és irodalom']) < 20) {
+                //dump('Nem elégséges eredmény - Magyar nyelv és irodalom: <20%');
+                return false;
+            } else {
+                //dump('magyar nyelv és irodalom OK');
+            }
+            
+            
+
+            //Kötelező pont kiszámítása
+
+            foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
+
+                if ($val['nev'] == $degreeRequired && intval($val['eredmeny'] >= 20)) {
+                    $requiredValue = intval($val['eredmeny']);
+                    break;  
+                } else {
+                    continue;
+                }
+            }
+            
+            //dump($requiredValue);
 
             //A legjobban sikerült kötelező tárgy meghatározása
 
@@ -232,7 +301,7 @@ class CalcController extends BaseController {
             foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
                 $optionalValues[$val['nev']] = intval($val['eredmeny']);
             }
-
+            
             //Csak az adott szakhoz tartozók kiszűrése
 
             //dump($optional, $optionalValues);
@@ -246,6 +315,8 @@ class CalcController extends BaseController {
 
             }
 
+            
+
             //dump($acceptedOptional);
 
             $bestOptionalValue = max($acceptedOptional);
@@ -257,9 +328,15 @@ class CalcController extends BaseController {
 
             $basePoints = ($requiredValue + $bestOptionalValue) * 2;
 
-            //dump($basePoints);
+            dump('Required value:'.$requiredValue);
+            dump('Best optional value: '.$bestOptionalValue);
+            dump('Best optional name: '.$bestOptionalName);
+
+            //dump($basePoints, $requiredValue, $bestOptionalValue);
 
             return $basePoints;
+
+            //die();
 
         } else if ($university == 'PPKE' && $faculty == "BTK" && $degree == "Anglisztika") {
             $required = ['angol'];
@@ -367,6 +444,8 @@ class CalcController extends BaseController {
             return false;
         }
 
+        //dump($base+$extra);
+
         return $base+$extra;
     }
 
@@ -374,20 +453,49 @@ class CalcController extends BaseController {
     
     //0
         $basePoints0 = $this->basePoints($this->exampleData0);
-        $extraPoints0 = $this->extraPoints($this->exampleData0);
-        $totalPoints0 = $this->totalPoints($basePoints0, $extraPoints0);
+
+        if ($basePoints0 == false) {
+            $extraPoints0 = false;
+            $totalPoints0 = false;
+        } else {
+            $extraPoints0 = $this->extraPoints($this->exampleData0);
+            $totalPoints0 = $this->totalPoints($basePoints0, $extraPoints0);
+        }
+
+        //dump($basePoints0, $extraPoints0, $totalPoints0);
+        
     //1
-        $basePoints1 = $this->basePoints($this->exampleData1);
+    $basePoints1 = $this->basePoints($this->exampleData0);
+
+    if ($basePoints1 == false) {
+        $extraPoints1 = false;
+        $totalPoints1 = false;
+    } else {
         $extraPoints1 = $this->extraPoints($this->exampleData1);
         $totalPoints1 = $this->totalPoints($basePoints1, $extraPoints1);
+    }
+
     //2
-        $basePoints2 = $this->basePoints($this->exampleData2);
+    $basePoints2 = $this->basePoints($this->exampleData2);
+
+    if ($basePoints2 == false) {
+        $extraPoints2 = false;
+        $totalPoints2 = false;
+    } else {
         $extraPoints2 = $this->extraPoints($this->exampleData2);
         $totalPoints2 = $this->totalPoints($basePoints2, $extraPoints2);
+    }
+
     //3
-        $basePoints3 = $this->basePoints($this->exampleData3);
+    $basePoints3 = $this->basePoints($this->exampleData3);
+
+    if ($basePoints3 == false) {
+        $extraPoints3 = false;
+        $totalPoints3 = false;
+    } else {
         $extraPoints3 = $this->extraPoints($this->exampleData3);
         $totalPoints3 = $this->totalPoints($basePoints3, $extraPoints3);
+    }
 
        return view('pointcalc', [
         'basePoints0' => $basePoints0,
