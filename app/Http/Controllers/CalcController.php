@@ -297,10 +297,17 @@ class CalcController extends BaseController {
 
             //A legjobban sikerült kötelező tárgy meghatározása
 
+            //dump($optionalValues);
+
+            //dump($data['erettsegi-eredmenyek']);
+
             //Minden eredmény ideiglenes tömbbe helyezése
             foreach ($data['erettsegi-eredmenyek'] as $key => $val) {
                 $optionalValues[$val['nev']] = intval($val['eredmeny']);
+                //dump($val['nev']);
             }
+
+            //dump($optionalValues);
             
             //Csak az adott szakhoz tartozók kiszűrése
 
@@ -322,15 +329,19 @@ class CalcController extends BaseController {
             $bestOptionalValue = max($acceptedOptional);
             $bestOptionalName = array_keys($optionalValues, max($acceptedOptional))[0];
 
+            //dump($acceptedOptional);
+            //dump('max($acceptedOptional):'.max($acceptedOptional));
+    
+
             //dump($bestOptionalValue,$bestOptionalName);
 
             //Alappontszám kiszámítása
 
             $basePoints = ($requiredValue + $bestOptionalValue) * 2;
 
-            dump('Required value:'.$requiredValue);
-            dump('Best optional value: '.$bestOptionalValue);
-            dump('Best optional name: '.$bestOptionalName);
+            //dump('Required value:'.$requiredValue);
+            //dump('Best optional value: '.$bestOptionalValue);
+            //dump('Best optional name: '.$bestOptionalName);
 
             //dump($basePoints, $requiredValue, $bestOptionalValue);
 
@@ -465,7 +476,7 @@ class CalcController extends BaseController {
         //dump($basePoints0, $extraPoints0, $totalPoints0);
         
     //1
-    $basePoints1 = $this->basePoints($this->exampleData0);
+    $basePoints1 = $this->basePoints($this->exampleData1);
 
     if ($basePoints1 == false) {
         $extraPoints1 = false;
